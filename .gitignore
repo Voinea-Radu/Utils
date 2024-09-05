@@ -1,0 +1,32 @@
+### IntelliJ IDEA ###
+.idea/
+*.iml
+
+### Gradle ###
+.gradle/
+build/
+
+### Groovy ###
+lib
+
+### Python ###
+venv
+
+### Temporary Files ###
+tmp/
+tmp-*
+py.log
+*.log
+test_workflow.sh
+__pycache__/
+scripts/libs/__pycache__/
+scripts/libs/commands/__pycache__/
+
+### Build Files ###
+
+### Credentrials Files ###
+scripts/credentials.py
+/config/
+http.key
+id.rsa
+digital_ocean.token

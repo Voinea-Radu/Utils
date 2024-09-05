@@ -1,0 +1,20 @@
+package com.voinearadu.redis_manager.dto.event_serialization;
+
+import com.voinearadu.redis_manager.event.RedisRequest;
+import com.voinearadu.redis_manager.manager.RedisManager;
+import lombok.Getter;
+
+@Getter
+public class SimpleEvent1 extends RedisRequest<Integer> {
+
+    private final int a;
+    private final int b;
+
+    public SimpleEvent1(RedisManager eventManager, int a, int b) {
+        super(eventManager, eventManager.getRedisConfig().getRedisID());
+
+        this.a = a;
+        this.b = b;
+    }
+
+}
