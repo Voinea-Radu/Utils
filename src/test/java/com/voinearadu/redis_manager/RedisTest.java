@@ -17,6 +17,7 @@ import com.voinearadu.redis_manager.event.RedisRequest;
 import com.voinearadu.redis_manager.manager.RedisManager;
 import com.voinearadu.redis_manager.manager.TestListener;
 import lombok.Getter;
+import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,7 @@ public class RedisTest {
 
     @BeforeAll
     public static void init() {
+        BasicConfigurator.configure();
         MessageBuilderManager.init(false);
 
         ClassLoader classLoader = RedisTest.class.getClassLoader();

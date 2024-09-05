@@ -2,6 +2,7 @@ package com.voinearadu.reflections;
 
 import com.voinearadu.logger.Logger;
 import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,11 +22,23 @@ import java.util.zip.ZipFile;
 public class Reflections {
 
     private final List<File> zipFiles;
+    private final List<File> folders;
     private final ClassLoader classLoader;
     private final List<String> searchDomain;
 
-    public Reflections(List<File> zipFiles, ClassLoader classLoader, String... searchDomain) {
+    public Reflections(@NotNull List<File> zipFiles, @NotNull List<File> folders, @NotNull ClassLoader classLoader, @NotNull String... searchDomain) {
         this.zipFiles = zipFiles;
+        this.folders = folders;
+
+        String[] classPathEntries = System.getProperty("java.class.path").split(File.pathSeparator);
+        for (String classPathEntry : classPathEntries) {
+            if (classPathEntry.endsWith(".jar") || classPathEntry.endsWith(".zip")) {
+                zipFiles.add(new File(classPathEntry));
+            } else {
+                folders.add(new File(classPathEntry));
+            }
+        }
+
         this.classLoader = classLoader;
         this.searchDomain = Arrays.stream(searchDomain).map(domain -> {
             if (!domain.endsWith(".")) {
@@ -35,7 +48,6 @@ public class Reflections {
         }).toList();
     }
 
-    @SuppressWarnings("unused")
     public static @Nullable Field getField(@NotNull Class<?> clazz, String fieldName) {
         Field field = null;
 
@@ -84,20 +96,24 @@ public class Reflections {
 
     @SuppressWarnings("unused")
     public Reflections from(String... searchDomain) {
-        return new Reflections(zipFiles, classLoader, searchDomain);
+        return new Reflections(zipFiles, folders, classLoader, searchDomain);
     }
 
     public @NotNull Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet<>();
 
         for (File zipFile : zipFiles) {
-            classes.addAll(getClasses(zipFile));
+            classes.addAll(getClassesFromZip(zipFile));
+        }
+
+        for (File zipFile : folders) {
+            classes.addAll(getClassesFromFolder(zipFile));
         }
 
         return classes;
     }
 
-    private @NotNull Set<Class<?>> getClasses(File zipFile) {
+    private @NotNull Set<Class<?>> getClassesFromZip(File zipFile) {
         Set<Class<?>> classes = new HashSet<>();
 
         try (ZipFile zip = new ZipFile(zipFile)) {
@@ -106,39 +122,14 @@ public class Reflections {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
 
-                if (entry == null)
-                    break;
-
-                if (entry.isDirectory()) {
+                if (entry == null || entry.isDirectory()) {
                     continue;
                 }
 
-                String name = entry.getName();
+                Class<?> clazz = processFile(entry.getName());
 
-                if (!name.endsWith(".class")) {
-                    continue;
-                }
-
-                name = name.replace("/", ".");
-                name = name.replace(".class", "");
-
-                if (searchDomain.stream().noneMatch(name::startsWith)) {
-                    continue;
-                }
-
-                String simpleClassName = name.substring(name.lastIndexOf('.') + 1);
-
-                // Skip Mixin classes
-                if (simpleClassName.contains("Mixin")) {
-                    continue;
-                }
-
-
-                try {
-                    classes.add(classLoader.loadClass(name));
-                } catch (Throwable throwable) {
-                    Logger.error("Failed to load class " + name + " from " + zipFile.getName());
-                    Logger.error(throwable);
+                if (clazz != null) {
+                    classes.add(clazz);
                 }
             }
         } catch (Exception error) {
@@ -148,7 +139,54 @@ public class Reflections {
         return classes;
     }
 
-    @SuppressWarnings("unused")
+    private @NotNull Set<Class<?>> getClassesFromFolder(File folder) {
+        Set<Class<?>> classes = new HashSet<>();
+
+        try {
+            for (File file : FileUtils.listFiles(folder, new String[]{"class"}, true)) {
+                Class<?> clazz = processFile(file.getAbsolutePath().replace(folder.getAbsolutePath() + File.separator, ""));
+
+                if (clazz != null) {
+                    classes.add(clazz);
+                }
+            }
+        } catch (Exception error) {
+            Logger.error(error);
+        }
+
+        return classes;
+    }
+
+    private @Nullable Class<?> processFile(String fileName) {
+        if (!fileName.endsWith(".class")) {
+            return null;
+        }
+
+        fileName = fileName.replace("/", ".");
+        fileName = fileName.replace("\\", ".");
+        fileName = fileName.replace(".class", "");
+
+        if (searchDomain.stream().noneMatch(fileName::startsWith)) {
+            return null;
+        }
+
+        String simpleClassName = fileName.substring(fileName.lastIndexOf('.') + 1);
+
+        // Skip Mixin classes
+        if (simpleClassName.contains("Mixin")) {
+            return null;
+        }
+
+        try {
+            return classLoader.loadClass(fileName);
+        } catch (Throwable throwable) {
+            Logger.error("Failed to load class " + fileName + " from " + fileName);
+            Logger.error(throwable);
+        }
+
+        return null;
+    }
+
     public @NotNull Set<Class<?>> getTypesAnnotatedWith(@NotNull Class<? extends Annotation> annotation) {
         Set<Class<?>> classes = new HashSet<>();
 
@@ -161,7 +199,6 @@ public class Reflections {
         return classes;
     }
 
-    @SuppressWarnings("unused")
     public @NotNull Set<Method> getMethodsAnnotatedWith(@NotNull Class<? extends Annotation> annotation) {
         Set<Method> methods = new HashSet<>();
 

@@ -1,6 +1,8 @@
 package com.voinearadu.message_builder;
 
 
+import org.apache.log4j.BasicConfigurator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -10,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MessageBuilderTests {
+
+    @BeforeAll
+    public static void init() {
+        BasicConfigurator.configure();
+    }
 
     @Test
     public void testMessageBuilder() {

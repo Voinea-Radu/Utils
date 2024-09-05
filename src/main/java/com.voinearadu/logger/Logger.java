@@ -48,6 +48,11 @@ public class Logger {
         log(Level.DEBUG, object, ConsoleColor.WHITE, 1);
     }
 
+    @SuppressWarnings("unused")
+    public static void debug(Object object, ConsoleColor color) {
+        log(Level.DEBUG, object, color, 1);
+    }
+
     public static void good(Object object) {
         log(Level.INFO, object, ConsoleColor.GREEN, 1);
     }
