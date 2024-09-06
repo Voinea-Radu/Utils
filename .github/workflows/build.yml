@@ -89,7 +89,7 @@ jobs:
           echo "
           voinearadu.url=https://repository.voinearadu.com/repository/maven-releases/
           voinearadu.auth.username=admin
-          voinearaduauth.password=${{ secrets.NEXUS_PASSWORD }}
+          voinearadu.auth.password=${{ secrets.NEXUS_PASSWORD }}
           " > ~/.gradle/gradle.properties
 
       - name: Cache Gradle Dependencies
