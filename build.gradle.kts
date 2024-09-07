@@ -27,15 +27,15 @@ dependencies {
     testImplementation(libs.jedis)
 
     // Annotations
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
-    testCompileOnly("org.projectlombok:lombok:1.18.34")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.34")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+    testCompileOnly(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
 
-    compileOnly("org.jetbrains:annotations:24.1.0")
-    annotationProcessor("org.jetbrains:annotations:24.1.0")
-    testCompileOnly("org.jetbrains:annotations:24.1.0")
-    testAnnotationProcessor("org.jetbrains:annotations:24.1.0")
+    compileOnly(libs.jetbrains.annotations)
+    annotationProcessor(libs.jetbrains.annotations)
+    testCompileOnly(libs.jetbrains.annotations)
+    testAnnotationProcessor(libs.jetbrains.annotations)
 
     // Tests
     testImplementation(platform(libs.junit.bom))
@@ -52,14 +52,14 @@ tasks {
 
     publishing {
         publications {
-            create<MavenPublication>("maven")
-        }
+            create<MavenPublication>("maven");
 
-        repositories {
-            maven(url = (project.findProperty("voinearadu.url") ?: "") as String) {
-                credentials(PasswordCredentials::class) {
-                    username = (project.findProperty("voinearadu.auth.username") ?: "") as String
-                    password = (project.findProperty("voinearadu.auth.password") ?: "") as String
+            repositories {
+                maven(url = (project.findProperty("voinearadu.url") ?: "") as String) {
+                    credentials(PasswordCredentials::class) {
+                        username = (project.findProperty("voinearadu.auth.username") ?: "") as String
+                        password = (project.findProperty("voinearadu.auth.password") ?: "") as String
+                    }
                 }
             }
         }
