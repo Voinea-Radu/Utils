@@ -1,4 +1,4 @@
-package com.voinearadu.file_manager.manager;
+package com.voinearadu.file_manager;
 
 import com.google.gson.Gson;
 import com.voinearadu.file_manager.utils.DateUtils;

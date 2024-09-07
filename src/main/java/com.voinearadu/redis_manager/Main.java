@@ -3,7 +3,7 @@ package com.voinearadu.redis_manager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.voinearadu.event_manager.EventManager;
-import com.voinearadu.file_manager.manager.FileManager;
+import com.voinearadu.file_manager.FileManager;
 import com.voinearadu.message_builder.MessageBuilderManager;
 import com.voinearadu.redis_manager.dto.RedisConfig;
 import com.voinearadu.redis_manager.manager.DebugRedisManager;
