@@ -50,25 +50,28 @@ tasks {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    publishing {
-        publications {
-            create<MavenPublication>("maven");
-
-            repositories {
-                maven(url = (project.findProperty("voinearadu.url") ?: "") as String) {
-                    credentials(PasswordCredentials::class) {
-                        username = (project.findProperty("voinearadu.auth.username") ?: "") as String
-                        password = (project.findProperty("voinearadu.auth.password") ?: "") as String
-                    }
-                }
-            }
-        }
-    }
-
     test {
         useJUnitPlatform()
         testLogging {
             events("passed", "skipped", "failed")
+        }
+    }
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven(url = (project.findProperty("voinearadu.url") ?: "") as String) {
+            credentials(PasswordCredentials::class) {
+                username = (project.findProperty("voinearadu.auth.username") ?: "") as String
+                password = (project.findProperty("voinearadu.auth.password") ?: "") as String
+            }
         }
     }
 }
