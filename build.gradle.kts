@@ -4,13 +4,12 @@ plugins {
     id("maven-publish")
 }
 
-val _group = libs.versions.group.get()
-val _version = libs.versions.version.get()
-
-group = _group
-version = _version
+group = libs.versions.group.get()
+version = libs.versions.version.get()
 
 repositories {
+    println(project.properties["com.voinearadu.publish"])
+
     mavenCentral()
     maven("https://repository.voinearadu.dev/repository/maven-releases/")
 }
@@ -67,10 +66,13 @@ publishing {
     }
 
     repositories {
-        maven(url = (project.findProperty("voinearadu.url") ?: "") as String) {
-            credentials(PasswordCredentials::class) {
-                username = (project.findProperty("voinearadu.auth.username") ?: "") as String
-                password = (project.findProperty("voinearadu.auth.password") ?: "") as String
+        if (project.properties["com.voinearadu.publish"] == "true") {
+            maven(url = (project.findProperty("com.voinearadu.url") ?: "") as String) {
+                name = "VoineaRaduRepository"
+                credentials(PasswordCredentials::class) {
+                    username = (project.findProperty("com.voinearadu.auth.username") ?: "") as String
+                    password = (project.findProperty("com.voinearadu.auth.password") ?: "") as String
+                }
             }
         }
     }
