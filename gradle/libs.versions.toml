@@ -16,7 +16,7 @@ jetbrains_annotations = { module = "org.jetbrains:annotations", version = "24.1.
 
 # Dependencies
 gson = { module = "com.google.code.gson:gson", version = "2.11.0" }
-jedis = { module = "redis.clients:jedis", version = "5.1.5" }
+jedis = { module = "redis.clients:jedis", version = "5.2.0" }
 apache_commons_compress = { module = "org.apache.commons:commons-compress", version = "1.27.1" }
 apache_commons_lang3 = { module = "org.apache.commons:commons-lang3", version = "3.17.0" }
 apache_commons_pool2 = { module = "org.apache.commons:commons-pool2", version = "2.12.0" }
