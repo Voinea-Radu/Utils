@@ -7,8 +7,8 @@ shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 
 [libraries]
 # Testing
-junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.11.0" }
-junit_bom = { module = "org.junit:junit-bom", version = "5.11.0" }
+junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.11.3" }
+junit_bom = { module = "org.junit:junit-bom", version = "5.11.3" }
 
 # Annotations
 lombok = { module = "org.projectlombok:lombok", version = "1.18.34" }
