@@ -86,17 +86,12 @@ public class Logger {
             id = caller.getSimpleName() + ".java";
         }
 
-        String log = null;
-
-        if (object == null) {
-            log = "null";
-        } else if (object instanceof Throwable) {
-            log = StackTraceUtils.toString((Throwable) object);
-        } else if (object instanceof StackTraceElement[]) {
-            log = StackTraceUtils.toString((StackTraceElement[]) object);
-        } else {
-            log = object.toString();
-        }
+        String log = switch (object) {
+            case null -> "null";
+            case Throwable throwable -> StackTraceUtils.toString(throwable);
+            case StackTraceElement[] stackTraceElements -> StackTraceUtils.toString(stackTraceElements);
+            default -> object.toString();
+        };
 
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(id);
         logger.info(color + log + ConsoleColor.RESET);
