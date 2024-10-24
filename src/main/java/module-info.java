@@ -9,6 +9,7 @@ module com.voinearadu.utils {
     exports com.voinearadu.redis_manager;
     exports com.voinearadu.reflections;
     exports com.voinearadu.generic;
+    exports com.voinearadu.generic.dto;
 
     requires static lombok;
     requires static org.jetbrains.annotations;

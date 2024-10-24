@@ -1,4 +1,4 @@
-package com.voinearadu.generic;
+package com.voinearadu.generic.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
