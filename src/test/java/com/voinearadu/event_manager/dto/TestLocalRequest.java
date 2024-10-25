@@ -1,8 +1,9 @@
 package com.voinearadu.event_manager.dto;
 
 import com.voinearadu.event_manager.EventManagerTests;
+import com.voinearadu.utils.event_manager.dto.LocalRequest;
 
-public class TestLocalRequest extends LocalRequest<Integer>{
+public class TestLocalRequest extends LocalRequest<Integer> {
 
     public int a;
     public int b;

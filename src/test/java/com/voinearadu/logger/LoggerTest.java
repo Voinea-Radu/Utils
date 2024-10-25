@@ -1,5 +1,6 @@
 package com.voinearadu.logger;
 
+import com.voinearadu.utils.logger.Logger;
 import lombok.SneakyThrows;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;

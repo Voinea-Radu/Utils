@@ -1,6 +1,8 @@
 package com.voinearadu.lambda;
 
-import com.voinearadu.lambda.lambda.*;
+import com.voinearadu.utils.lambda.CancelableTimeTask;
+import com.voinearadu.utils.lambda.ScheduleUtils;
+import com.voinearadu.utils.lambda.lambda.*;
 import lombok.SneakyThrows;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;

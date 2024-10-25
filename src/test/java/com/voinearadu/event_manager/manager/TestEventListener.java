@@ -1,7 +1,7 @@
 package com.voinearadu.event_manager.manager;
 
 import com.voinearadu.event_manager.EventManagerTests;
-import com.voinearadu.event_manager.annotation.EventHandler;
+import com.voinearadu.utils.event_manager.annotation.EventHandler;
 import com.voinearadu.event_manager.dto.TestComplexEvent;
 import com.voinearadu.event_manager.dto.TestEvent;
 import com.voinearadu.event_manager.dto.TestLocalEvent;

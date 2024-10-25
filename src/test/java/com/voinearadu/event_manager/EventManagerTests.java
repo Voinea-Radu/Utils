@@ -5,6 +5,7 @@ import com.voinearadu.event_manager.dto.TestEvent;
 import com.voinearadu.event_manager.dto.TestLocalEvent;
 import com.voinearadu.event_manager.dto.TestLocalRequest;
 import com.voinearadu.event_manager.manager.TestEventListener;
+import com.voinearadu.utils.event_manager.EventManager;
 import lombok.Getter;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;

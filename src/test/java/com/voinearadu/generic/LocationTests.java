@@ -1,6 +1,6 @@
 package com.voinearadu.generic;
 
-import com.voinearadu.generic.dto.Location;
+import com.voinearadu.utils.generic.dto.Location;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

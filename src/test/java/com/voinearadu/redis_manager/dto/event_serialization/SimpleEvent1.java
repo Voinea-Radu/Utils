@@ -1,7 +1,7 @@
 package com.voinearadu.redis_manager.dto.event_serialization;
 
-import com.voinearadu.redis_manager.event.RedisRequest;
-import com.voinearadu.redis_manager.manager.RedisManager;
+import com.voinearadu.utils.redis_manager.event.RedisRequest;
+import com.voinearadu.utils.redis_manager.manager.RedisManager;
 import lombok.Getter;
 
 @Getter

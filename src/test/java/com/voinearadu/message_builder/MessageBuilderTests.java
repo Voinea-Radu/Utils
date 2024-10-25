@@ -1,6 +1,8 @@
 package com.voinearadu.message_builder;
 
 
+import com.voinearadu.utils.message_builder.MessageBuilder;
+import com.voinearadu.utils.message_builder.MessageBuilderList;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,15 +1,15 @@
 module com.voinearadu.utils {
-    exports com.voinearadu.event_manager;
-    exports com.voinearadu.file_manager;
-    exports com.voinearadu.lambda;
-    exports com.voinearadu.lambda.lambda;
-    exports com.voinearadu.logger;
-    exports com.voinearadu.logger.dto;
-    exports com.voinearadu.message_builder;
-    exports com.voinearadu.redis_manager;
-    exports com.voinearadu.reflections;
-    exports com.voinearadu.generic;
-    exports com.voinearadu.generic.dto;
+    exports com.voinearadu.utils.event_manager;
+    exports com.voinearadu.utils.file_manager;
+    exports com.voinearadu.utils.lambda;
+    exports com.voinearadu.utils.lambda.lambda;
+    exports com.voinearadu.utils.logger;
+    exports com.voinearadu.utils.logger.dto;
+    exports com.voinearadu.utils.message_builder;
+    exports com.voinearadu.utils.redis_manager;
+    exports com.voinearadu.utils.reflections;
+    exports com.voinearadu.utils.generic;
+    exports com.voinearadu.utils.generic.dto;
 
     requires static lombok;
     requires static org.jetbrains.annotations;
