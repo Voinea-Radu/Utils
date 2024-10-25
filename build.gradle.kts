@@ -8,8 +8,6 @@ group = libs.versions.group.get()
 version = libs.versions.version.get()
 
 repositories {
-    println(project.properties["com.voinearadu.publish"])
-
     mavenCentral()
     maven("https://repository.voinearadu.dev/repository/maven-releases/")
 }
@@ -72,6 +70,15 @@ publishing {
                 credentials(PasswordCredentials::class) {
                     username = (project.findProperty("com.voinearadu.auth.username") ?: "") as String
                     password = (project.findProperty("com.voinearadu.auth.password") ?: "") as String
+                }
+            }
+        }
+        if (project.properties["generic.publish"] == "true") {
+            maven(url = (project.findProperty("generic.url") ?: "") as String) {
+                name = "GenericRepository"
+                credentials(PasswordCredentials::class) {
+                    username = (project.findProperty("generic.auth.username") ?: "") as String
+                    password = (project.findProperty("generic.auth.password") ?: "") as String
                 }
             }
         }

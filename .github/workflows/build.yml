@@ -64,11 +64,11 @@ jobs:
         run: |
           mkdir -p ~/.gradle
           echo "
-          com.voinearadu.url=https://repository.voinearadu.com/repository/maven-releases/
-          com.voinearadu.auth.username=admin
-          com.voinearadu.auth.password=${{ secrets.NEXUS_PASSWORD }}
+          generic.url=${{ secrets.NEXUS_URL }}
+          generic.auth.username=${{ secrets.NEXUS_USERNAME }}
+          generic.auth.password=${{ secrets.NEXUS_PASSWORD }}
           " > ~/.gradle/gradle.properties
-          if [ "${{ secrets.NEXUS_PASSWORD }}" == "" ]; then echo "com.voinearadu.publish=false" >> ~/.gradle/gradle.properties; fi
+          if [ "${{ secrets.NEXUS_PASSWORD }}" == "" ]; then echo "generic.publish=false" >> ~/.gradle/gradle.properties; fi
 
       - name: Cache Gradle Dependencies
         uses: actions/cache@v4
