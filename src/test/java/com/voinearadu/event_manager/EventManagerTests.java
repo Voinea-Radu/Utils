@@ -7,7 +7,6 @@ import com.voinearadu.event_manager.dto.TestLocalRequest;
 import com.voinearadu.event_manager.manager.TestEventListener;
 import com.voinearadu.utils.event_manager.EventManager;
 import lombok.Getter;
-import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,6 @@ public class EventManagerTests {
 
     @BeforeAll
     public static void setup() {
-        BasicConfigurator.configure();
         eventManager.register(new TestEventListener());
     }
 

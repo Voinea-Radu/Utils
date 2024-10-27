@@ -4,7 +4,6 @@ import com.voinearadu.reflections.annotation.TestAnnotation;
 import com.voinearadu.reflections.dto.TestChild;
 import com.voinearadu.reflections.dto.TestParent;
 import com.voinearadu.utils.reflections.Reflections;
-import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +20,6 @@ public class ReflectionsTest {
 
     @BeforeAll
     public static void init() {
-        BasicConfigurator.configure();
-
         ReflectionsTest.reflections = new Reflections(new ArrayList<>(), new ArrayList<>(), ReflectionsTest.class.getClassLoader(), "com.voinearadu.reflections");
     }
 

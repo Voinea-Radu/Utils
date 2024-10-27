@@ -1,20 +1,18 @@
 package com.voinearadu.utils.logger;
 
-import com.voinearadu.utils.lambda.lambda.ArgLambdaExecutor;
 import com.voinearadu.utils.lambda.lambda.ReturnArgLambdaExecutor;
 import com.voinearadu.utils.logger.dto.ConsoleColor;
+import com.voinearadu.utils.logger.dto.Level;
 import com.voinearadu.utils.logger.utils.StackTraceUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.event.Level;
 
 public class Logger {
 
     private static final StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
     private static Level LOG_LEVEl = Level.TRACE;
     private static ReturnArgLambdaExecutor<String, String> PACKAGE_PARSER = packageName -> null;
-    private static ArgLambdaExecutor<String> LOG_HANDLER = log -> {
-    };
+    private static Handler LOG_HANDLER = System.out::println;
 
     public static void setLogLevel(Level logLevel) {
         Logger.LOG_LEVEl = logLevel;
@@ -25,7 +23,7 @@ public class Logger {
         Logger.PACKAGE_PARSER = packageParser;
     }
 
-    public static void setLogHandler(@NotNull ArgLambdaExecutor<String> logHandler) {
+    public static void setLogHandler(@NotNull Handler logHandler) {
         Logger.LOG_HANDLER = logHandler;
     }
 
@@ -75,7 +73,7 @@ public class Logger {
     }
 
     private static void log(Level level, Object object, @NotNull ConsoleColor color, int depth) {
-        if (level.toInt() < LOG_LEVEl.toInt()) {
+        if (level.getLevel() < LOG_LEVEl.getLevel()) {
             return;
         }
 
@@ -86,15 +84,22 @@ public class Logger {
             id = caller.getSimpleName() + ".java";
         }
 
-        String log = switch (object) {
+        String log = color + switch (object) {
             case null -> "null";
             case Throwable throwable -> StackTraceUtils.toString(throwable);
             case StackTraceElement[] stackTraceElements -> StackTraceUtils.toString(stackTraceElements);
             default -> object.toString();
         };
 
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(id);
-        logger.info(color + log + ConsoleColor.RESET);
-        LOG_HANDLER.execute(log);
+        LOG_HANDLER.log(log, id);
+    }
+
+    public interface Handler{
+        @SuppressWarnings("unused")
+        default void log(String log, String id){
+            log(log);
+        }
+
+        void log(String log);
     }
 }

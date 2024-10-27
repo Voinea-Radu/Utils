@@ -13,7 +13,6 @@ import com.voinearadu.utils.file_manager.dto.serializable.SerializableList;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableMap;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableObject;
 import lombok.Getter;
-import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +32,6 @@ public class GsonTests {
 
     @BeforeAll
     public static void init() {
-        BasicConfigurator.configure();
         ClassLoader classLoader = GsonTests.class.getClassLoader();
 
         SerializableListGsonTypeAdapter serializableListGsonTypeAdapter = new SerializableListGsonTypeAdapter(classLoader);

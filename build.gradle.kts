@@ -15,7 +15,6 @@ repositories {
 dependencies {
     // Dependencies
     api(libs.gson)
-    api(libs.slf4j)
     api(libs.apache.commons.compress)
     api(libs.apache.commons.lang3)
     api(libs.apache.commons.pool2)
@@ -37,8 +36,6 @@ dependencies {
     // Tests
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.slf4j.log4j)
-    testImplementation(libs.log4j)
 }
 
 tasks {

@@ -15,7 +15,6 @@ module com.voinearadu.utils {
     requires static org.jetbrains.annotations;
     requires static com.google.gson;
     requires static org.apache.commons.io;
-    requires static org.slf4j;
     requires static redis.clients.jedis;
     requires static org.apache.commons.pool2;
 }

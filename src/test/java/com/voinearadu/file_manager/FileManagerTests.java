@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.voinearadu.file_manager.dto.files.FileObject;
 import com.voinearadu.utils.file_manager.FileManager;
-import org.apache.log4j.BasicConfigurator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,6 @@ public class FileManagerTests {
 
     @BeforeAll
     public static void init() {
-        BasicConfigurator.configure();
         Gson gson = new GsonBuilder() //NOPMD - suppressed GsonCreatedForEachMethodCall
                 .create();
         fileManager = new FileManager(() -> gson, "tmp");
