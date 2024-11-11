@@ -16,4 +16,8 @@ public abstract class LocalRequest<Result> extends LocalEvent {
     public void respond(Result result) {
         this.result = result;
     }
+
+    public void setResult(Result result) {
+        respond(result);
+    }
 }

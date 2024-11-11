@@ -5,7 +5,9 @@ import com.voinearadu.utils.event_manager.dto.EventMethod;
 import com.voinearadu.utils.event_manager.dto.IEvent;
 import com.voinearadu.utils.logger.Logger;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -59,14 +61,29 @@ public class EventManager {
 
     public void register(Class<?> clazz) {
         try {
-            register(clazz.getDeclaredConstructor().newInstance());
+            Constructor<?> constructor = null;
+
+            if (clazz.getDeclaredConstructors().length != 0) {
+                constructor = clazz.getConstructor();
+            } else if (clazz.getConstructors().length != 0) {
+                constructor = clazz.getConstructor();
+            }
+
+            if (constructor == null) {
+                Logger.error("No constructors found for class " + clazz.getName());
+                return;
+            }
+
+            constructor.setAccessible(true);
+            register(constructor.newInstance());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException error) {
+            Logger.error("Failed to register class " + clazz.getName() + ". Was unable to find a no-args constructor");
             Logger.error(error);
         }
     }
 
-    public void register(Object object) {
+    public void register(@NotNull Object object) {
         for (Method method : object.getClass().getDeclaredMethods()) {
             register(object, method);
         }
@@ -74,14 +91,13 @@ public class EventManager {
         sortMethods();
     }
 
-    @SuppressWarnings("unused")
-    public void unregister(Object object) {
-        for (Method method : object.getClass().getMethods()) {
+    public void unregister(@NotNull Class<?> clazz) {
+        for (Method method : clazz.getMethods()) {
             unregister(method);
         }
     }
 
-    public void fire(Object event) {
+    public void fire(@NotNull Object event) {
         Class<?> eventClass = event.getClass();
 
         if (!methods.containsKey(eventClass)) {
@@ -95,7 +111,7 @@ public class EventManager {
         }
     }
 
-    protected Class<?> getEventClass(Method method) {
+    protected Class<?> getEventClass(@NotNull Method method) {
         if (!method.isAnnotationPresent(EventHandler.class)) {
             return null;
         }
@@ -147,15 +163,22 @@ public class EventManager {
             boolean result = externalRegistrar.unregister(method, eventClass);
 
             if (!result) {
-                Logger.error("Failed to register method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
+                Logger.error("Failed to unregister method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
             }
 
             return;
         }
 
         List<EventMethod> eventMethods = methods.getOrDefault(eventClass, new ArrayList<>());
-        eventMethods.removeIf(eventMethod -> eventMethod.getMethod().equals(method));
+        boolean result = eventMethods.removeIf(eventMethod -> eventMethod.getMethod().equals(method));
+
+        if (!result) {
+            Logger.error("Failed to unregister method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
+            return;
+        }
+
         methods.put(eventClass, eventMethods);
+        Logger.warn("Unregistered method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
     }
 
     private void sortMethods() {
