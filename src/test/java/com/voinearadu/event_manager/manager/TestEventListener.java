@@ -1,34 +1,31 @@
 package com.voinearadu.event_manager.manager;
 
-import com.voinearadu.event_manager.EventManagerTests;
-import com.voinearadu.utils.event_manager.annotation.EventHandler;
-import com.voinearadu.event_manager.dto.TestComplexEvent;
+import com.voinearadu.event_manager.dto.ExternalEvent;
 import com.voinearadu.event_manager.dto.TestEvent;
 import com.voinearadu.event_manager.dto.TestLocalEvent;
 import com.voinearadu.event_manager.dto.TestLocalRequest;
+import com.voinearadu.utils.event_manager.annotation.EventHandler;
 
 public class TestEventListener {
 
     @EventHandler
     public void onTestEvent(TestEvent event) {
-        EventManagerTests.executed1 = true;
-        event.finished = true;
+        event.setResult(event.getNumber1() + event.getNumber2());
     }
 
     @EventHandler
-    public void onTestEvent(TestComplexEvent event) {
-        event.result = event.a + event.b;
+    public void onTestLocalEvent(TestLocalEvent event) {
+        event.setResult(event.getNumber1() + event.getNumber2());
     }
 
     @EventHandler
-    public void onTestEvent(TestLocalEvent event) {
-        EventManagerTests.executed2 = true;
-        event.finished = true;
+    public void onTestLocalRequest(TestLocalRequest event) {
+        event.setResult(event.getNumber1() + event.getNumber2());
     }
 
     @EventHandler
-    public void onTestEvent(TestLocalRequest event) {
-        event.setResult(event.a + event.b);
+    public void onExternalEvent(ExternalEvent.Wrapper event) {
+        event.getEvent().setResult(event.getEvent().getNumber1() + event.getEvent().getNumber2());
     }
 
 }

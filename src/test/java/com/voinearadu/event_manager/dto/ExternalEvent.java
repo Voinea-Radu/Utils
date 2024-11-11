@@ -5,17 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
-public class TestEvent implements IEvent {
+@Setter
+@AllArgsConstructor
+public class ExternalEvent {
 
     private int number1;
     private int number2;
-    private @Setter int result;
+    private int result;
 
-    public TestEvent(int number1, int number2) {
+    public ExternalEvent(int number1, int number2) {
         this.number1 = number1;
         this.number2 = number2;
+        this.result = number1 + number2;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class Wrapper implements IEvent{
+        private ExternalEvent event;
     }
 
 }

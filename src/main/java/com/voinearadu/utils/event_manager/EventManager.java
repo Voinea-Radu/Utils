@@ -1,6 +1,7 @@
 package com.voinearadu.utils.event_manager;
 
 import com.voinearadu.utils.event_manager.annotation.EventHandler;
+import com.voinearadu.utils.event_manager.dto.EventMethod;
 import com.voinearadu.utils.event_manager.dto.IEvent;
 import com.voinearadu.utils.logger.Logger;
 import lombok.NoArgsConstructor;
@@ -14,23 +15,46 @@ import java.util.List;
 @NoArgsConstructor
 public class EventManager {
 
-    private final HashMap<Class<?>, Object> objects = new HashMap<>();
     private final HashMap<Class<?>, List<EventMethod>> methods = new HashMap<>();
-    private ExternalRegistrar externalRegister = (object, method, eventClass) -> false;
-    private ExternalUnregister externalUnregister = (method, eventClass) -> false;
+    private ExternalRegistrar externalRegistrar = new ExternalRegistrar() {
+        @Override
+        public boolean register(Object object, Method method, Class<?> eventClass) {
+            return false;
+        }
 
+        @Override
+        public boolean unregister(Method method, Class<?> eventClass) {
+            return false;
+        }
+    };
+
+    /**
+     * Used to register an external registrar, that can catch any event that does not implement {@link IEvent}
+     */
     public interface ExternalRegistrar {
-        boolean execute(Object object, Method method, Class<?> eventClass);
+        /**
+         * @param object     The parent object where the event method is located
+         * @param method     The actual event method
+         * @param eventClass The event class
+         * @return true if the method was registered successfully, false otherwise
+         */
+        boolean register(Object object, Method method, Class<?> eventClass);
+
+        /**
+         * @param method     The actual event method
+         * @param eventClass The event class
+         * @return true if the method was unregistered successfully, false otherwise
+         */
+        boolean unregister(Method method, Class<?> eventClass);
     }
 
-    public interface ExternalUnregister {
-        boolean execute(Method method, Class<?> eventClass);
-    }
-
-    @SuppressWarnings("unused")
-    public void registerExternalRegistrar(ExternalRegistrar register, ExternalUnregister unregister) {
-        externalRegister = register;
-        externalUnregister = unregister;
+    /**
+     * Used to register an external registrar, that can catch any event that does not implement {@link IEvent}
+     *
+     * @param externalRegistrar the external registrar
+     */
+    public void registerExternalRegistrar(ExternalRegistrar externalRegistrar) {
+        this.externalRegistrar = externalRegistrar;
     }
 
     public void register(Class<?> clazz) {
@@ -90,7 +114,7 @@ public class EventManager {
         return method.getParameterTypes()[0];
     }
 
-    private void register(Object object, Method method) {
+    private void register(Object parentObject, Method method) {
         Class<?> eventClass = getEventClass(method);
 
         if (eventClass == null) {
@@ -98,7 +122,7 @@ public class EventManager {
         }
 
         if (!IEvent.class.isAssignableFrom(eventClass)) {
-            boolean result = externalRegister.execute(object, method, eventClass);
+            boolean result = externalRegistrar.register(parentObject, method, eventClass);
 
             if (!result) {
                 Logger.error("Failed to register method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
@@ -107,14 +131,8 @@ public class EventManager {
             return;
         }
 
-        Class<?> parentClass = object.getClass();
-
-        if (!objects.containsKey(parentClass)) {
-            objects.put(parentClass, object);
-        }
-
         List<EventMethod> eventMethods = methods.getOrDefault(eventClass, new ArrayList<>());
-        eventMethods.add(new EventMethod(method));
+        eventMethods.add(new EventMethod(parentObject, method));
         methods.put(eventClass, eventMethods);
     }
 
@@ -126,7 +144,7 @@ public class EventManager {
         }
 
         if (!IEvent.class.isAssignableFrom(eventClass)) {
-            boolean result = externalUnregister.execute(method, eventClass);
+            boolean result = externalRegistrar.unregister(method, eventClass);
 
             if (!result) {
                 Logger.error("Failed to register method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
@@ -136,7 +154,7 @@ public class EventManager {
         }
 
         List<EventMethod> eventMethods = methods.getOrDefault(eventClass, new ArrayList<>());
-        eventMethods.remove(new EventMethod(method));
+        eventMethods.removeIf(eventMethod -> eventMethod.getMethod().equals(method));
         methods.put(eventClass, eventMethods);
     }
 
@@ -148,44 +166,5 @@ public class EventManager {
         }
     }
 
-    public class EventMethod {
-        private final Method method;
-        private final EventHandler annotation;
 
-        public EventMethod(Method method) {
-            this.method = method;
-            this.annotation = method.getAnnotation(EventHandler.class);
-        }
-
-        public void fire(Object event) {
-            try {
-                method.setAccessible(true);
-                Object object = objects.get(method.getDeclaringClass());
-                method.invoke(object, event);
-            } catch (IllegalAccessException | InvocationTargetException error) {
-                Logger.error(error);
-            }
-        }
-
-        public static class Comparator implements java.util.Comparator<EventMethod> {
-            @Override
-            public int compare(EventMethod object1, EventMethod object2) {
-                return object1.annotation.order() - object2.annotation.order();
-            }
-        }
-
-        @Override
-        public boolean equals(Object object) {
-            if (!(object instanceof EventMethod eventMethod)) {
-                return false;
-            }
-
-            return eventMethod.method.equals(method);
-        }
-
-        @Override
-        public int hashCode() {
-            return method.hashCode();
-        }
-    }
 }
