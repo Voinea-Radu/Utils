@@ -28,27 +28,22 @@ public class GsonTests {
     private final static String objectJson = "{\"class_name\":\"java.lang.String\",\"data\":\"test\"}";
     private final static String object1Json = "{\"class_name\":\"com.voinearadu.file_manager.dto.interface_serialization.CustomObject1\",\"data\":\"test\"}";
     private final static String object2Json = "{\"class_name\":\"com.voinearadu.file_manager.dto.interface_serialization.CustomObject2\",\"data\":1000}";
-    private static @Getter Gson gson = new Gson();
+    private static @Getter Gson gson;
 
     @BeforeAll
     public static void init() {
         ClassLoader classLoader = GsonTests.class.getClassLoader();
 
-        SerializableListGsonTypeAdapter serializableListGsonTypeAdapter = new SerializableListGsonTypeAdapter(classLoader);
-        SerializableMapGsonTypeAdapter serializableMapGsonTypeAdapter = new SerializableMapGsonTypeAdapter(classLoader);
-        SerializableObjectTypeAdapter serializableObjectTypeAdapter = new SerializableObjectTypeAdapter(classLoader);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        new SerializableListGsonTypeAdapter(classLoader).register(gsonBuilder);
+        new SerializableMapGsonTypeAdapter(classLoader).register(gsonBuilder);
+        new SerializableObjectTypeAdapter(classLoader).register(gsonBuilder);
 
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .registerTypeAdapter(serializableListGsonTypeAdapter.getSerializedClass(), serializableListGsonTypeAdapter)
-                .registerTypeAdapter(serializableMapGsonTypeAdapter.getSerializedClass(), serializableMapGsonTypeAdapter)
-                .registerTypeAdapter(serializableObjectTypeAdapter.getSerializedClass(), serializableObjectTypeAdapter);
-
-        //noinspection unchecked
         for (InterfaceGsonTypeAdapter<? extends ISerializable> typeAdapter : InterfaceGsonTypeAdapter.generate(classLoader, CustomObject1.class, CustomObject2.class)) {
-            gsonBuilder.registerTypeAdapter(typeAdapter.getSerializedClass(), typeAdapter);
+           typeAdapter.register(gsonBuilder);
         }
 
-        gson = gsonBuilder.create(); //NOPMD - suppressed GsonCreatedForEachMethodCall
+        gson = gsonBuilder.create();
     }
 
     @Test
@@ -189,13 +184,11 @@ public class GsonTests {
         assertEquals(object2Json, json2);
     }
 
-    @SuppressWarnings("EmptyMethod")
     @Test
     public void deserializeInterface() {
 
     }
 
-    @SuppressWarnings("EmptyMethod")
     @Test
     public void serializeDeserializeInterface() {
 

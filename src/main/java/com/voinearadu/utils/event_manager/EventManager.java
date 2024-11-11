@@ -123,7 +123,8 @@ public class EventManager {
         }
 
         if (method.getParameterCount() != 1) {
-            Logger.error("Method " + method.getName() + " from class " + method.getDeclaringClass() + " has " + method.getParameterCount() + " parameters, expected 1");
+            Logger.error("Method " + method.getName() + " from class " + method.getDeclaringClass() + " has " +
+                    method.getParameterCount() + " parameters, expected 1");
             return null;
         }
 
@@ -141,7 +142,8 @@ public class EventManager {
             boolean result = externalRegistrar.register(parentObject, method, eventClass);
 
             if (!result) {
-                Logger.error("Failed to register method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
+                Logger.error("Failed to register method " + method.getName() + " from class " +
+                        method.getDeclaringClass() + " with event class " + eventClass.getName());
             }
 
             return;
@@ -163,7 +165,8 @@ public class EventManager {
             boolean result = externalRegistrar.unregister(method, eventClass);
 
             if (!result) {
-                Logger.error("Failed to unregister method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
+                Logger.error("Failed to unregister method " + method.getName() + " from class " +
+                        method.getDeclaringClass() + " with event class " + eventClass.getName());
             }
 
             return;
@@ -173,12 +176,14 @@ public class EventManager {
         boolean result = eventMethods.removeIf(eventMethod -> eventMethod.getMethod().equals(method));
 
         if (!result) {
-            Logger.error("Failed to unregister method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
+            Logger.error("Failed to unregister method " + method.getName() + " from class " +
+                    method.getDeclaringClass() + " with event class " + eventClass.getName());
             return;
         }
 
         methods.put(eventClass, eventMethods);
-        Logger.warn("Unregistered method " + method.getName() + " from class " + method.getDeclaringClass() + " with event class " + eventClass.getName());
+        Logger.warn("Unregistered method " + method.getName() + " from class " + method.getDeclaringClass() +
+                " with event class " + eventClass.getName());
     }
 
     private void sortMethods() {

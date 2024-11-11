@@ -19,14 +19,14 @@ import java.nio.file.Paths;
 
 public record FileManager(@NotNull ReturnLambdaExecutor<Gson> gsonProvider, @NotNull String basePath) {
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public synchronized String readFile(@NotNull String directory, @NotNull String fileName) {
+    public synchronized @NotNull String readFile(@NotNull String directory, @NotNull String fileName) {
         Path path = Paths.get(getDataFolder().getPath(), directory, fileName);
         StringBuilder json = new StringBuilder();
         File file = path.toFile();
 
         if (!file.exists()) {
             try {
+                //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             } catch (IOException error) {
                 Logger.error(error);
@@ -50,14 +50,16 @@ public record FileManager(@NotNull ReturnLambdaExecutor<Gson> gsonProvider, @Not
         }
     }
 
-    @SuppressWarnings({"ResultOfMethodCallIgnored", "UnusedReturnValue"})
+    @SuppressWarnings("UnusedReturnValue")
     public synchronized @Nullable Path writeFile(@NotNull String directory, @NotNull String fileName, @NotNull String content) {
         Path path = Paths.get(getDataFolder().getPath(), directory, fileName);
         File file = path.toFile();
+        //noinspection ResultOfMethodCallIgnored
         file.getParentFile().mkdirs();
 
         if (!file.exists()) {
             try {
+                //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             } catch (IOException error) {
                 Logger.error(error);
@@ -76,10 +78,10 @@ public record FileManager(@NotNull ReturnLambdaExecutor<Gson> gsonProvider, @Not
         return path;
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public synchronized void writeFileAndBackup(@NotNull String directory, @NotNull String fileName, @NotNull String newContent) {
         Path path = Paths.get(getDataFolder().getPath(), directory, fileName);
         File file = path.toFile();
+        //noinspection ResultOfMethodCallIgnored
         file.getParentFile().mkdirs();
 
         String oldContent = readFile(directory, fileName);
@@ -108,7 +110,7 @@ public record FileManager(@NotNull ReturnLambdaExecutor<Gson> gsonProvider, @Not
         save(object, "");
     }
 
-    public synchronized void save(Object object, String directory) {
+    public synchronized void save(@NotNull Object object, String directory) {
         Class<?> clazz = object.getClass();
 
         save(object, directory, PathUtils.toSnakeCase(clazz.getSimpleName()));

@@ -2,6 +2,10 @@ package com.voinearadu.redis_manager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.voinearadu.redis_manager.dto.event_serialization.ComplexEvent1;
+import com.voinearadu.redis_manager.dto.event_serialization.SimpleEvent1;
+import com.voinearadu.redis_manager.dto.event_serialization.SimpleEvent2;
+import com.voinearadu.redis_manager.manager.TestListener;
 import com.voinearadu.utils.event_manager.EventManager;
 import com.voinearadu.utils.file_manager.dto.gson.SerializableListGsonTypeAdapter;
 import com.voinearadu.utils.file_manager.dto.gson.SerializableMapGsonTypeAdapter;
@@ -9,13 +13,9 @@ import com.voinearadu.utils.file_manager.dto.gson.SerializableObjectTypeAdapter;
 import com.voinearadu.utils.message_builder.MessageBuilderManager;
 import com.voinearadu.utils.redis_manager.dto.RedisConfig;
 import com.voinearadu.utils.redis_manager.dto.RedisResponse;
-import com.voinearadu.redis_manager.dto.event_serialization.ComplexEvent1;
-import com.voinearadu.redis_manager.dto.event_serialization.SimpleEvent1;
-import com.voinearadu.redis_manager.dto.event_serialization.SimpleEvent2;
 import com.voinearadu.utils.redis_manager.dto.gson.RedisRequestGsonTypeAdapter;
 import com.voinearadu.utils.redis_manager.event.RedisRequest;
 import com.voinearadu.utils.redis_manager.manager.RedisManager;
-import com.voinearadu.redis_manager.manager.TestListener;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class RedisTest {
                 .registerTypeAdapter(serializableMapGsonTypeAdapter.getSerializedClass(), serializableMapGsonTypeAdapter)
                 .registerTypeAdapter(serializableObjectTypeAdapter.getSerializedClass(), serializableObjectTypeAdapter);
 
-        gson = gsonBuilder.create(); //NOPMD - suppressed GsonCreatedForEachMethodCall
+        gson = gsonBuilder.create();
 
         redisManager.getEventManager().register(TestListener.class);
     }

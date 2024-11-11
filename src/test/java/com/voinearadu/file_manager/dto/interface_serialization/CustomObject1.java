@@ -1,12 +1,14 @@
 package com.voinearadu.file_manager.dto.interface_serialization;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CustomObject1 implements CustomInterface {
 
     @SuppressWarnings("unused")
-    private final String class_name = CustomObject1.class.getName();
+    @SerializedName("class_name")
+    private final String className = CustomObject1.class.getName();
     public String data;
 
 }

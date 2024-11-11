@@ -20,8 +20,7 @@ public class FileManagerTests {
 
     @BeforeAll
     public static void init() {
-        Gson gson = new GsonBuilder() //NOPMD - suppressed GsonCreatedForEachMethodCall
-                .create();
+        Gson gson = new GsonBuilder().create();
         fileManager = new FileManager(() -> gson, "tmp");
     }
 
