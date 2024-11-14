@@ -20,7 +20,6 @@ public class SerializableListGsonTypeAdapter extends GsonSerializer<Serializable
         super(classLoader, SerializableList.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public SerializableList deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
         String className = json.getAsJsonObject().get(CLASS_NAME_FIELD).getAsString();
@@ -29,8 +28,10 @@ public class SerializableListGsonTypeAdapter extends GsonSerializer<Serializable
             Class clazz = classLoader.loadClass(className);
 
             JsonArray data = json.getAsJsonObject().get(VALUES).getAsJsonArray();
-            List output = new ArrayList(data.asList().stream().map(element-> context.deserialize(element, clazz)).toList());
+            //noinspection unchecked
+            List output = new ArrayList(data.asList().stream().map(element -> context.deserialize(element, clazz)).toList());
 
+            //noinspection unchecked
             return new SerializableList(clazz, output);
         } catch (ClassNotFoundException error) {
             Logger.error(error);
@@ -38,7 +39,6 @@ public class SerializableListGsonTypeAdapter extends GsonSerializer<Serializable
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public JsonElement serialize(SerializableList list, Type type, JsonSerializationContext context) {
         JsonObject object = new JsonObject();
@@ -46,6 +46,7 @@ public class SerializableListGsonTypeAdapter extends GsonSerializer<Serializable
         object.addProperty(CLASS_NAME_FIELD, list.getValueClass().getName());
 
         JsonArray array = new JsonArray();
+        //noinspection unchecked
         list.forEach((element) -> array.add(context.serialize(element)));
 
         object.add(VALUES, array);

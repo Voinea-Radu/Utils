@@ -166,10 +166,9 @@ public class RedisManager {
         );
     }
 
-    @SuppressWarnings("rawtypes")
     @Nullable
     private RedisResponse<?> getResponse(ResponseEvent command) {
-        //Remove streams, these are slow when called a lot
+        //noinspection rawtypes
         for (RedisResponse response : awaitingResponses) {
             if (response.getId() == command.getId()) {
                 return response;

@@ -1,6 +1,9 @@
 package com.voinearadu.event_manager.manager;
 
-import com.voinearadu.event_manager.dto.*;
+import com.voinearadu.event_manager.dto.ExternalEvent;
+import com.voinearadu.event_manager.dto.TestEvent;
+import com.voinearadu.event_manager.dto.TestLocalEvent;
+import com.voinearadu.event_manager.dto.TestLocalRequest;
 import com.voinearadu.utils.event_manager.annotation.EventHandler;
 
 public class TestEventListener {
@@ -24,7 +27,6 @@ public class TestEventListener {
     public void onExternalEvent(ExternalEvent.Wrapper event) {
         event.getEvent().setResult(event.getEvent().getNumber1() + event.getEvent().getNumber2());
     }
-
 
 
 }

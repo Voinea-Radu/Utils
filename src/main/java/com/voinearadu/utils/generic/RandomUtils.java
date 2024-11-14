@@ -8,6 +8,7 @@ import java.util.List;
 
 public class RandomUtils {
 
+    @SuppressWarnings("unused")
     public static int getRandom(Range range) {
         return getRandom(range.getMin(), range.getMax());
     }
@@ -16,6 +17,7 @@ public class RandomUtils {
         return (int) (Math.random() * (max - min) + min);
     }
 
+    @SuppressWarnings("unused")
     public static @NotNull <T extends IWeighted> T getRandom(@NotNull List<T> items) {
         int totalWeight = items.stream().mapToInt(IWeighted::getWeight).sum();
         int random = getRandom(0, totalWeight);
@@ -25,7 +27,7 @@ public class RandomUtils {
                 return item;
             }
         }
-        return items.get(items.size() - 1);
+        return items.getLast();
     }
 
 }

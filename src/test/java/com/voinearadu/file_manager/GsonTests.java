@@ -2,16 +2,19 @@ package com.voinearadu.file_manager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.voinearadu.file_manager.dto.interface_serialization.CustomObject1;
+import com.voinearadu.file_manager.dto.interface_serialization.CustomObject2;
 import com.voinearadu.utils.file_manager.dto.gson.InterfaceGsonTypeAdapter;
 import com.voinearadu.utils.file_manager.dto.gson.SerializableListGsonTypeAdapter;
 import com.voinearadu.utils.file_manager.dto.gson.SerializableMapGsonTypeAdapter;
 import com.voinearadu.utils.file_manager.dto.gson.SerializableObjectTypeAdapter;
-import com.voinearadu.file_manager.dto.interface_serialization.CustomObject1;
-import com.voinearadu.file_manager.dto.interface_serialization.CustomObject2;
 import com.voinearadu.utils.file_manager.dto.serializable.ISerializable;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableList;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableMap;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableObject;
+import com.voinearadu.utils.logger.Logger;
+import com.voinearadu.utils.logger.dto.Level;
+import com.voinearadu.utils.reflections.Reflections;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -33,6 +36,7 @@ public class GsonTests {
     @BeforeAll
     public static void init() {
         ClassLoader classLoader = GsonTests.class.getClassLoader();
+        Logger.setLogLevel(Level.TRACE);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         new SerializableListGsonTypeAdapter(classLoader).register(gsonBuilder);
@@ -40,10 +44,20 @@ public class GsonTests {
         new SerializableObjectTypeAdapter(classLoader).register(gsonBuilder);
 
         for (InterfaceGsonTypeAdapter<? extends ISerializable> typeAdapter : InterfaceGsonTypeAdapter.generate(classLoader, CustomObject1.class, CustomObject2.class)) {
-           typeAdapter.register(gsonBuilder);
+            typeAdapter.register(gsonBuilder);
         }
 
         gson = gsonBuilder.create();
+    }
+
+    @Test
+    public void testReflectionsIntegration() {
+        Reflections.Crawler reflectionsCrawler = Reflections.simple(GsonTests.class.getClassLoader(), CustomObject1.class, CustomObject2.class);
+        List<InterfaceGsonTypeAdapter<? extends ISerializable>> serializers = InterfaceGsonTypeAdapter.generate(GsonTests.class.getClassLoader(), reflectionsCrawler);
+        for (InterfaceGsonTypeAdapter<? extends ISerializable> serializer : serializers) {
+            Logger.debug(serializer.getSerializedClass());
+        }
+        assertEquals(2, serializers.size());
     }
 
     @Test

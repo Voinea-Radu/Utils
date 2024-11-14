@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Location  {
+public class Location {
 
     private double x;
     private double y;
@@ -30,6 +30,7 @@ public class Location  {
         this(x, y, z, 0, 0, world);
     }
 
+    @SuppressWarnings("unused")
     public Location(double x, double y, double z, float pitch, float yaw) {
         this(x, y, z, pitch, yaw, null);
     }
@@ -51,7 +52,7 @@ public class Location  {
     }
 
     public Location offsetNew(double x, double y, double z, float pitch, float yaw) {
-        Location output = clone();
+        Location output = copy();
 
         output.x += x;
         output.y += y;
@@ -70,6 +71,7 @@ public class Location  {
         return offsetNew(-x, -y, -z);
     }
 
+    @SuppressWarnings("unused")
     public Location negativeOffsetNew(Location offset) {
         return negativeOffsetNew(
                 offset.x,
@@ -78,6 +80,7 @@ public class Location  {
         );
     }
 
+    @SuppressWarnings("unused")
     public Location offset(Location offset) {
         return offset(offset.x, offset.y, offset.z);
     }
@@ -87,6 +90,7 @@ public class Location  {
         return negativeOffset(offset.x, offset.y, offset.z);
     }
 
+    @SuppressWarnings("unused")
     public Location offsetNew(Location offset) {
         return offsetNew(
                 offset.x,
@@ -106,8 +110,8 @@ public class Location  {
         return this;
     }
 
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public Location clone() {
+    @SuppressWarnings("unused")
+    public Location copy() {
         return new Location(x, y, z, pitch, yaw, world);
     }
 
@@ -122,6 +126,7 @@ public class Location  {
         return getWorld() != null ? getWorld().equals(location.getWorld()) : location.getWorld() == null;
     }
 
+    @SuppressWarnings("unused")
     public boolean equalsCoords(Object o) {
         if (this == o) return true;
         if (!(o instanceof Location location)) return false;
@@ -168,6 +173,7 @@ public class Location  {
         return new Location(maxX, maxY, maxZ);
     }
 
+    @SuppressWarnings("unused")
     public String toCompactString() {
         return "(" + x + ", " + y + ", " + z + ")";
     }

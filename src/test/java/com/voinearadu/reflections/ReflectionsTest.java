@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -17,22 +16,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ReflectionsTest {
 
     private static Reflections reflections;
+    private static Reflections.Crawler reflectionsCrawler;
 
     @BeforeAll
     public static void init() {
-        ReflectionsTest.reflections = new Reflections(new ArrayList<>(), new ArrayList<>(), ReflectionsTest.class.getClassLoader(), "com.voinearadu.reflections");
+        ReflectionsTest.reflections = new Reflections(ReflectionsTest.class.getClassLoader());
+        ReflectionsTest.reflectionsCrawler = reflections.from("com.voinearadu.reflections");
     }
 
     @Test
     public void testTypeAnnotationProcessing() {
-        int typesCount = reflections.getTypesAnnotatedWith(TestAnnotation.class).size();
+        int typesCount = reflectionsCrawler.getTypesAnnotatedWith(TestAnnotation.class).size();
 
         assertEquals(1, typesCount);
     }
 
     @Test
     public void testMethodAnnotationProcessing() {
-        int typesCount = reflections.getMethodsAnnotatedWith(TestAnnotation.class).size();
+        int typesCount = reflectionsCrawler.getMethodsAnnotatedWith(TestAnnotation.class).size();
 
         assertEquals(1, typesCount);
     }
@@ -48,7 +49,7 @@ public class ReflectionsTest {
 
     @Test
     public void testTypeChildrenProcessing() {
-        int typesCount = reflections.getOfType(TestParent.class).size();
+        int typesCount = reflectionsCrawler.getOfType(TestParent.class).size();
 
         assertEquals(2, typesCount);
     }

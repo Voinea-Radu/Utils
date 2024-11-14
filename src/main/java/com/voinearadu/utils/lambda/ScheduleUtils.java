@@ -6,10 +6,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
 
-@SuppressWarnings({"UnusedReturnValue", "unused"})
 @Getter
 public class ScheduleUtils {
 
+    @SuppressWarnings("UnusedReturnValue")
     public static CancelableTimeTask runTaskLater(@NotNull LambdaExecutor executor, long delay) {
         CancelableTimeTask task = new CancelableTimeTask() {
             @Override
@@ -28,6 +28,7 @@ public class ScheduleUtils {
         return task;
     }
 
+    @SuppressWarnings("unused")
     public static @NotNull CancelableTimeTask runTaskTimer(@NotNull LambdaExecutor executor, long period) {
         return runTaskTimer(new CancelableTimeTask() {
             @Override
@@ -44,6 +45,7 @@ public class ScheduleUtils {
         return task;
     }
 
+    @SuppressWarnings("unused")
     public static @NotNull CancelableTimeTask runTaskLaterAsync(@NotNull LambdaExecutor executor, long delay) {
         CancelableTimeTask task = new CancelableTimeTask() {
             @Override
@@ -57,6 +59,7 @@ public class ScheduleUtils {
         return task;
     }
 
+    @SuppressWarnings("unused")
     public static @NotNull CancelableTimeTask runTaskTimerAsync(@NotNull LambdaExecutor executor, long period) {
         CancelableTimeTask task = new CancelableTimeTask() {
             @Override
@@ -70,6 +73,7 @@ public class ScheduleUtils {
         return task;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static @NotNull CancelableTimeTask runTaskAsync(@NotNull LambdaExecutor executor) {
         CancelableTimeTask task = new CancelableTimeTask() {
             @Override

@@ -29,6 +29,12 @@ public class InterfaceGsonTypeAdapter<T extends ISerializable> implements JsonDe
         return generate(classLoader, Arrays.asList(classes));
     }
 
+    public static List<InterfaceGsonTypeAdapter<? extends ISerializable>> generate(ClassLoader classLoader, Reflections.Crawler reflections) {
+        Set<Class<? extends ISerializable>> classes = reflections.getOfType(ISerializable.class);
+
+        return generate(classLoader, classes);
+    }
+
     public static List<InterfaceGsonTypeAdapter<? extends ISerializable>> generate(ClassLoader classLoader, Collection<Class<? extends ISerializable>> classes) {
         return new ArrayList<>(
                 classes.stream()
@@ -36,13 +42,6 @@ public class InterfaceGsonTypeAdapter<T extends ISerializable> implements JsonDe
                         .map(clazz -> new InterfaceGsonTypeAdapter<>(classLoader, clazz))
                         .toList()
         );
-    }
-
-    @SuppressWarnings("unused")
-    public static List<InterfaceGsonTypeAdapter<? extends ISerializable>> generate(ClassLoader classLoader, Reflections reflections) {
-        Set<Class<? extends ISerializable>> classes = reflections.getOfType(ISerializable.class);
-
-        return generate(classLoader, classes);
     }
 
     @SneakyThrows(value = {ClassNotFoundException.class})

@@ -1,9 +1,9 @@
 package com.voinearadu.redis_manager.manager;
 
-import com.voinearadu.utils.event_manager.annotation.EventHandler;
 import com.voinearadu.redis_manager.dto.event_serialization.ComplexEvent1;
 import com.voinearadu.redis_manager.dto.event_serialization.SimpleEvent1;
 import com.voinearadu.redis_manager.dto.event_serialization.SimpleEvent2;
+import com.voinearadu.utils.event_manager.annotation.EventHandler;
 
 import java.util.ArrayList;
 import java.util.List;

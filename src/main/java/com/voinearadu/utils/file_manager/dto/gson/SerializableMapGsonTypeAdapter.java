@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings("rawtypes")
 public class SerializableMapGsonTypeAdapter extends GsonSerializer<SerializableMap> {
 
     private static final String KEY_CLASS_NAME = "key_class_name";
@@ -36,9 +36,11 @@ public class SerializableMapGsonTypeAdapter extends GsonSerializer<SerializableM
             HashMap output = new HashMap<>();
 
             for (int i = 0; i < keys.size(); i++) {
+                //noinspection unchecked
                 output.put(context.deserialize(keys.get(i), keyClass), context.deserialize(values.get(i), valueClass));
             }
 
+            //noinspection unchecked
             return new SerializableMap(keyClass, valueClass, output);
 
         } catch (ClassNotFoundException error) {
@@ -57,6 +59,7 @@ public class SerializableMapGsonTypeAdapter extends GsonSerializer<SerializableM
         JsonArray keyArray = new JsonArray();
         JsonArray valueArray = new JsonArray();
 
+        //noinspection unchecked
         list.forEach((key, value) -> {
             keyArray.add(context.serialize(key));
             valueArray.add(context.serialize(value));

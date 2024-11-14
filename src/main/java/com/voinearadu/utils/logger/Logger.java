@@ -4,6 +4,7 @@ import com.voinearadu.utils.lambda.lambda.ReturnArgLambdaExecutor;
 import com.voinearadu.utils.logger.dto.ConsoleColor;
 import com.voinearadu.utils.logger.dto.Level;
 import com.voinearadu.utils.logger.utils.StackTraceUtils;
+import com.voinearadu.utils.message_builder.MessageBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,6 +87,7 @@ public class Logger {
 
         String log = color + switch (object) {
             case null -> "null";
+            case MessageBuilder messageBuilder -> messageBuilder.parse();
             case Throwable throwable -> StackTraceUtils.toString(throwable);
             case StackTraceElement[] stackTraceElements -> StackTraceUtils.toString(stackTraceElements);
             default -> object.toString();
@@ -94,9 +96,9 @@ public class Logger {
         LOG_HANDLER.log(log, id);
     }
 
-    public interface Handler{
+    public interface Handler {
         @SuppressWarnings("unused")
-        default void log(String log, String id){
+        default void log(String log, String id) {
             log(log);
         }
 

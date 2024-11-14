@@ -38,7 +38,7 @@ public class RedisRequest<Response> implements IEvent {
     public static @Nullable RedisRequest<?> deserialize(RedisManager redisManager, String data) {
         RedisRequest<?> event = redisManager.getGson().execute().fromJson(data, RedisRequest.class);
 
-        if(event == null) {
+        if (event == null) {
             return null;
         }
 
@@ -67,12 +67,10 @@ public class RedisRequest<Response> implements IEvent {
         return redisManager.getGson().execute().toJson(this);
     }
 
-    @SuppressWarnings("unused")
     public void respond(Response response) {
         new ResponseEvent(redisManager, this, response).send();
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public RedisResponse<Response> send() {
         return redisManager.send(this);
     }
@@ -115,18 +113,17 @@ public class RedisRequest<Response> implements IEvent {
         ScheduleUtils.runTaskAsync(() -> sendAndExecuteSync(success, fail));
     }
 
-    @SuppressWarnings({"unused", "UnusedReturnValue"})
     @SneakyThrows
     public RedisResponse<Response> sendAndWait() {
         return sendAndWait(redisManager.getRedisConfig().getTimeout());
     }
 
-    @SuppressWarnings("BusyWait")
     @SneakyThrows
     public RedisResponse<Response> sendAndWait(int timeout) {
         int currentWait = 0;
         RedisResponse<Response> response = send();
         while (!response.isFinished()) {
+            //noinspection BusyWait
             Thread.sleep(redisManager.getRedisConfig().getWaitBeforeIteration());
             currentWait += redisManager.getRedisConfig().getWaitBeforeIteration();
             if (currentWait > timeout) {

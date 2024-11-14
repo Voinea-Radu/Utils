@@ -13,6 +13,7 @@ public class RedisResponse<T> {
     protected final RedisManager redisManager;
 
     private final long id;
+    @Getter
     private T response;
     private String responseClassName;
 
@@ -33,7 +34,6 @@ public class RedisResponse<T> {
         timeout = true;
     }
 
-    @SuppressWarnings("unused")
     public boolean hasTimeout() {
         return timeout;
     }
@@ -63,17 +63,13 @@ public class RedisResponse<T> {
     }
 
     @SuppressWarnings("unused")
-    public T getResponse() {
-        return response;
-    }
-
-    @SuppressWarnings({"unchecked", "unused"})
     @SneakyThrows
     public Class<T> getResponseClass() {
         if (responseClassName == null) {
             return null;
         }
 
+        //noinspection unchecked
         return (Class<T>) redisManager.getClassLoader().loadClass(responseClassName);
     }
 

@@ -21,7 +21,7 @@ public class ExternalEvent {
 
     @AllArgsConstructor
     @Getter
-    public static class Wrapper implements IEvent{
+    public static class Wrapper implements IEvent {
         private ExternalEvent event;
     }
 
