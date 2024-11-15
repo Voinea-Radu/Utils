@@ -8,7 +8,7 @@ junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.11.3
 junit_bom = { module = "org.junit:junit-bom", version = "5.11.3" }
 
 # Annotations
-lombok = { module = "org.projectlombok:lombok", version = "1.18.34" }
+lombok = { module = "org.projectlombok:lombok", version = "1.18.36" }
 jetbrains_annotations = { module = "org.jetbrains:annotations", version = "26.0.1" }
 
 # Dependencies
