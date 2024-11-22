@@ -2,11 +2,11 @@ package com.voinearadu.utils.reflections;
 
 import com.voinearadu.utils.logger.Logger;
 import lombok.Getter;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -91,12 +91,36 @@ public class Reflections {
 
     @SuppressWarnings("UnusedReturnValue")
     public Reflections registerDirectory(File directory) {
-        try {
-            for (File file : FileUtils.listFiles(directory, new String[]{"class"}, true)) {
-                processFile(file.getAbsolutePath().replace(directory.getAbsolutePath() + File.separator, ""));
+        if(!directory.isDirectory()){
+            return this;
+        }
+
+        File[] files = directory.listFiles();
+
+        if (files == null) {
+            return this;
+        }
+
+        Queue<File> toExplore = new LinkedList<>(Arrays.asList(files));
+
+        while(!toExplore.isEmpty()){
+            File file = toExplore.poll();
+
+            if (file.isDirectory()) {
+                File[] subFiles = file.listFiles();
+
+                if (subFiles != null) {
+                    toExplore.addAll(Arrays.asList(subFiles));
+                }
+
+                continue;
             }
-        } catch (Exception error) {
-            Logger.error(error);
+
+            if(!file.getName().endsWith(".class")){
+                continue;
+            }
+
+            processFile(file.getAbsolutePath().replace(directory.getAbsolutePath() + File.separator, ""));
         }
 
         return this;

@@ -15,10 +15,6 @@ repositories {
 dependencies {
     // Dependencies
     api(libs.gson)
-    api(libs.apache.commons.compress)
-    api(libs.apache.commons.lang3)
-    api(libs.apache.commons.pool2)
-    api(libs.apache.commons.io)
     compileOnly(libs.jedis)
     testImplementation(libs.jedis)
 

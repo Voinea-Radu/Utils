@@ -14,7 +14,6 @@ module com.voinearadu.utils {
     requires static lombok;
     requires static org.jetbrains.annotations;
     requires static com.google.gson;
-    requires static org.apache.commons.io;
     requires static redis.clients.jedis;
     requires static org.apache.commons.pool2;
     requires java.sql;
