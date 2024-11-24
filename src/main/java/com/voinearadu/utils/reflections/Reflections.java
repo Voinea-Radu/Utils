@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.zip.ZipEntry;
@@ -304,17 +305,32 @@ public class Reflections {
             return methods;
         }
 
-        public @NotNull <T> Set<Class<? extends T>> getOfType(@NotNull Class<T> clazz) {
+        public @NotNull <T> Set<Class<? extends T>> getOfType(@NotNull Class<T> typeClass) {
             Set<Class<? extends T>> classes = new HashSet<>();
 
             for (Class<?> aClass : getClasses()) {
-                if (clazz.isAssignableFrom(aClass)) {
+                if (typeClass.isAssignableFrom(aClass)) {
                     //noinspection unchecked
                     classes.add((Class<? extends T>) aClass);
                 }
             }
 
             return classes;
+        }
+
+        public @NotNull <T> Set<T> getAndCreateObjectsOfType(@NotNull Class<T> typeClass) {
+            Set<T> objects = new HashSet<>();
+
+            for (Class<? extends T> clazz : getOfType(typeClass)) {
+                try {
+                    objects.add(clazz.getConstructor().newInstance());
+                } catch (IllegalAccessException | InstantiationException | NoSuchMethodException |
+                         InvocationTargetException e) {
+                    Logger.warn("There was an error while creating object of type " + clazz + ". Please check if you have a no-args constructor.");
+                }
+            }
+
+            return objects;
         }
 
     }

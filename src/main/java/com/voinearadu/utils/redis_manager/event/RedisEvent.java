@@ -14,7 +14,7 @@ public class RedisEvent extends RedisRequest<Void> {
     }
 
     @Override
-    public void fireEvent() {
+    public void fire() {
         redisManager.getEventManager().fire(this);
         respond(null); // Mark the event as completed
     }

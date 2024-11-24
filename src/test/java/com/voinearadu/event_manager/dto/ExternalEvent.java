@@ -1,6 +1,9 @@
 package com.voinearadu.event_manager.dto;
 
+import com.voinearadu.event_manager.EventManagerTests;
+import com.voinearadu.utils.event_manager.EventManager;
 import com.voinearadu.utils.event_manager.dto.IEvent;
+import com.voinearadu.utils.event_manager.dto.LocalEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +22,14 @@ public class ExternalEvent {
         this.result = number1 + number2;
     }
 
-    @AllArgsConstructor
     @Getter
-    public static class Wrapper implements IEvent {
+    public static class Wrapper extends LocalEvent {
         private ExternalEvent event;
+
+        public Wrapper(ExternalEvent event) {
+            super(EventManagerTests.getEventManager());
+            this.event=event;
+        }
     }
 
 }

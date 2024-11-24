@@ -11,7 +11,7 @@ public class TestLocalRequest extends LocalRequest<Integer> {
     private final int number2;
 
     public TestLocalRequest(int number1, int number2) {
-        super(0);
+        super(EventManagerTests.getEventManager(), 0);
         this.number1 = number1;
         this.number2 = number2;
     }

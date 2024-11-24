@@ -1,5 +1,6 @@
 package com.voinearadu.utils.event_manager.dto;
 
+import com.voinearadu.utils.event_manager.EventManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,14 @@ import lombok.Setter;
 @Setter
 public abstract class LocalEvent implements IEvent {
 
-    public abstract void fire();
+    private EventManager eventManager;
 
+    public LocalEvent(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+
+    @Override
+    public void fire() {
+        eventManager.fire(this);
+    }
 }

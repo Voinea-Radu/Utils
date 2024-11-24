@@ -220,7 +220,7 @@ public class RedisManager {
 
                 ScheduleUtils.runTaskAsync(() -> {
                     debugger.receive(channel, event);
-                    redisEvent.fireEvent();
+                    redisEvent.fire();
                 });
             }
 

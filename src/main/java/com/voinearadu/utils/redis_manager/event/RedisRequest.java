@@ -58,7 +58,7 @@ public class RedisRequest<Response> implements IEvent {
      * Sends the event locally only
      * Do NOT call manually, call {@link #sendAndWait()} or any of it derivatives
      */
-    public void fireEvent() {
+    public void fire() {
         redisManager.getEventManager().fire(this);
     }
 
