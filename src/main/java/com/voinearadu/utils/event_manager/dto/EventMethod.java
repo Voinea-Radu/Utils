@@ -1,11 +1,11 @@
 package com.voinearadu.utils.event_manager.dto;
 
 import com.voinearadu.utils.event_manager.annotation.EventHandler;
+import com.voinearadu.utils.event_manager.exceptions.RuntimeEventException;
 import com.voinearadu.utils.logger.Logger;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Getter
@@ -20,12 +20,16 @@ public class EventMethod {
         this.annotation = method.getAnnotation(EventHandler.class);
     }
 
-    public void fire(Object event) {
+    public void fire(Object event, boolean suppressExceptions) {
         try {
             method.setAccessible(true);
             method.invoke(parentObject, event);
-        } catch (IllegalAccessException | InvocationTargetException error) {
-            Logger.error(error);
+        } catch (Exception error) {
+            if (suppressExceptions) {
+                Logger.error(error);
+            } else {
+                throw new RuntimeEventException(error);
+            }
         }
     }
 

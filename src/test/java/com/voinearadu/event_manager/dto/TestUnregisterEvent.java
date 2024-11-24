@@ -16,8 +16,4 @@ public class TestUnregisterEvent extends LocalRequest<Integer> {
         this.number2 = number2;
     }
 
-    @Override
-    public void fire() {
-        EventManagerTests.getEventManager().fire(this);
-    }
 }

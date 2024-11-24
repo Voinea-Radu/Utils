@@ -15,7 +15,7 @@ public abstract class LocalEvent implements IEvent {
     }
 
     @Override
-    public void fire() {
-        eventManager.fire(this);
+    public void fire(boolean suppressExceptions) {
+        eventManager.fire(this, suppressExceptions);
     }
 }

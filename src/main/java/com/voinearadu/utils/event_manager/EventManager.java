@@ -98,6 +98,10 @@ public class EventManager {
     }
 
     public void fire(@NotNull Object event) {
+        this.fire(event, true);
+    }
+
+    public void fire(@NotNull Object event, boolean suppressExceptions) {
         Class<?> eventClass = event.getClass();
 
         if (!methods.containsKey(eventClass)) {
@@ -107,7 +111,7 @@ public class EventManager {
         List<EventMethod> eventMethods = methods.get(eventClass);
 
         for (EventMethod method : eventMethods) {
-            method.fire(event);
+            method.fire(event, suppressExceptions);
         }
     }
 

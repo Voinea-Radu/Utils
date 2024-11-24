@@ -18,9 +18,4 @@ public class TestLocalEvent extends LocalEvent {
         this.number1 = number1;
         this.number2 = number2;
     }
-
-    @Override
-    public void fire() {
-        EventManagerTests.getEventManager().fire(this);
-    }
 }

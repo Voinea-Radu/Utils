@@ -15,9 +15,4 @@ public class TestLocalRequest extends LocalRequest<Integer> {
         this.number1 = number1;
         this.number2 = number2;
     }
-
-    @Override
-    public void fire() {
-        EventManagerTests.getEventManager().fire(this);
-    }
 }

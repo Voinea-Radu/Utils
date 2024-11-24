@@ -63,6 +63,11 @@ public class RedisRequest<Response> implements IEvent {
     }
 
     @Override
+    public void fire(boolean suppressExceptions) {
+
+    }
+
+    @Override
     public String toString() {
         return redisManager.getGson().execute().toJson(this);
     }
