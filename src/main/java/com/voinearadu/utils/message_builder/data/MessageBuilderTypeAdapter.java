@@ -4,13 +4,13 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.voinearadu.utils.file_manager.dto.GsonSerializer;
+import com.voinearadu.utils.file_manager.dto.GsonTypeAdapter;
 import com.voinearadu.utils.message_builder.MessageBuilder;
 
 import java.lang.reflect.Type;
 
 @SuppressWarnings("unused")
-public class MessageBuilderTypeAdapter extends GsonSerializer<MessageBuilder> {
+public class MessageBuilderTypeAdapter extends GsonTypeAdapter<MessageBuilder> {
 
     public MessageBuilderTypeAdapter(ClassLoader classLoader) {
         super(classLoader, MessageBuilder.class);

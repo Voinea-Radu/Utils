@@ -1,7 +1,7 @@
 package com.voinearadu.utils.file_manager.dto.gson;
 
 import com.google.gson.*;
-import com.voinearadu.utils.file_manager.dto.GsonSerializer;
+import com.voinearadu.utils.file_manager.dto.GsonTypeAdapter;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableList;
 import com.voinearadu.utils.logger.Logger;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @SuppressWarnings("rawtypes")
-public class SerializableListGsonTypeAdapter extends GsonSerializer<SerializableList> {
+public class SerializableListGsonTypeAdapter extends GsonTypeAdapter<SerializableList> {
 
     private static final String CLASS_NAME_FIELD = "class_name";
     private static final String VALUES = "values";

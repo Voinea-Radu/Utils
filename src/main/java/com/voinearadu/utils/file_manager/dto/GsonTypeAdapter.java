@@ -8,12 +8,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GsonSerializer<T> implements JsonSerializer<T>, JsonDeserializer<T> {
+public abstract class GsonTypeAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
 
     protected final ClassLoader classLoader;
     private final @Getter Class<T> serializedClass;
 
-    public GsonSerializer(ClassLoader classLoader, Class<T> serializedClass) {
+    public GsonTypeAdapter(ClassLoader classLoader, Class<T> serializedClass) {
         this.serializedClass = serializedClass;
         this.classLoader = classLoader;
     }

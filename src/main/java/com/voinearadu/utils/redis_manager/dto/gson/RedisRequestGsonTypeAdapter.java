@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.voinearadu.utils.file_manager.dto.GsonSerializer;
+import com.voinearadu.utils.file_manager.dto.GsonTypeAdapter;
 import com.voinearadu.utils.logger.Logger;
 import com.voinearadu.utils.redis_manager.event.RedisRequest;
 import com.voinearadu.utils.redis_manager.manager.RedisManager;
@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 
 
 @SuppressWarnings("rawtypes")
-public class RedisRequestGsonTypeAdapter extends GsonSerializer<RedisRequest> {
+public class RedisRequestGsonTypeAdapter extends GsonTypeAdapter<RedisRequest> {
 
     private final RedisManager redisManager;
 

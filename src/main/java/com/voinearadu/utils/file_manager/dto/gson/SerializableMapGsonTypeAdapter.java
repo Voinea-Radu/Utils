@@ -1,7 +1,7 @@
 package com.voinearadu.utils.file_manager.dto.gson;
 
 import com.google.gson.*;
-import com.voinearadu.utils.file_manager.dto.GsonSerializer;
+import com.voinearadu.utils.file_manager.dto.GsonTypeAdapter;
 import com.voinearadu.utils.file_manager.dto.serializable.SerializableMap;
 import com.voinearadu.utils.logger.Logger;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 
 @SuppressWarnings("rawtypes")
-public class SerializableMapGsonTypeAdapter extends GsonSerializer<SerializableMap> {
+public class SerializableMapGsonTypeAdapter extends GsonTypeAdapter<SerializableMap> {
 
     private static final String KEY_CLASS_NAME = "key_class_name";
     private static final String VALUE_CLASS_NAME = "value_class_name";
