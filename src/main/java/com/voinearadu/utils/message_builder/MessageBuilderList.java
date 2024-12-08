@@ -45,11 +45,13 @@ public class MessageBuilderList extends GenericMessageBuilder<List<String>> {
         List<String> parsed = parse();
         StringBuilder output = new StringBuilder();
 
-        for (String line : parsed) {
+        for (int i = 0; i < parsed.size() - 1; i++) {
             output
-                    .append(line)
+                    .append(parsed.get(i))
                     .append('\n');
         }
+
+        output.append(parsed.getLast());
 
         return output.toString();
     }
