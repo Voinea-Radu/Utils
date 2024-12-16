@@ -4,8 +4,8 @@ group = "com.voinearadu"
 
 [libraries]
 # Testing
-junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.11.3" }
-junit_bom = { module = "org.junit:junit-bom", version = "5.11.3" }
+junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.11.4" }
+junit_bom = { module = "org.junit:junit-bom", version = "5.11.4" }
 
 # Annotations
 lombok = { module = "org.projectlombok:lombok", version = "1.18.36" }
