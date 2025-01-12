@@ -2,8 +2,12 @@ plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("tech.medivh.plugin.publisher") version "1.2.1"
+    id("tech.medivh.plugin.publisher") version "1.2.1" apply false
     id("signing")
+}
+
+if (project.properties["maven.publish"] == "true") {
+    apply(plugin = "tech.medivh.plugin.publisher")
 }
 
 group = libs.versions.group.get()
@@ -61,16 +65,16 @@ tasks.register("sourcesJar", Jar::class) {
 }
 
 project.afterEvaluate{
-    project.tasks["publishMavenPublicationToMedivhSonatypeRepository"].enabled = false
-    project.tasks["publishMedivhMavenJavaPublicationToVoineaRaduRepositoryRepository"].enabled = false
+    if (project.properties["maven.publish"] == "true") {
+        project.tasks["publishMavenPublicationToMedivhSonatypeRepository"].enabled = false
+        project.tasks["publishMedivhMavenJavaPublicationToVoineaRaduRepositoryRepository"].enabled = false
+    }
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-//            artifact(tasks.named("sourcesJar"))
-//            artifact(tasks.named("javadocJar"))
 
             pom{
                 name.set("Utils Library")
