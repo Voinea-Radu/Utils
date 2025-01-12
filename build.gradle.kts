@@ -102,6 +102,16 @@ publishing {
     }
 
     repositories {
+        if (project.properties["com.voinearadu.publish"] == "true") {
+            maven(url = (project.findProperty("com.voinearadu.url") ?: "") as String) {
+                name = "VoineaRaduRepository"
+                credentials(PasswordCredentials::class) {
+                    username = (project.findProperty("com.voinearadu.auth.username") ?: "") as String
+                    password = (project.findProperty("com.voinearadu.auth.password") ?: "") as String
+                }
+            }
+        }
+
         if (project.properties["generic.publish"] == "true") {
             maven(url = (project.findProperty("generic.url") ?: "") as String) {
                 name = "GenericRepository"
@@ -123,8 +133,10 @@ signing {
 }
 
 centralPortalPlus {
-    url = localRepo
-    username = project.findProperty("maven.auth.username") as String
-    password = project.findProperty("maven.auth.password") as String
-    publishingType = BaseCentralPortalPlusExtension.PublishingType.AUTOMATIC
+    if (project.properties["maven.publish"] == "true") {
+        url = localRepo
+        username = project.findProperty("maven.auth.username") as String
+        password = project.findProperty("maven.auth.password") as String
+        publishingType = BaseCentralPortalPlusExtension.PublishingType.AUTOMATIC
+    }
 }
