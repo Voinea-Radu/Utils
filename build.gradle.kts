@@ -1,10 +1,8 @@
-import cn.lalaki.pub.BaseCentralPortalPlusExtension
-
 plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("cn.lalaki.central") version "1.2.5"
+    id("tech.medivh.plugin.publisher") version "1.2.1"
     id("signing")
 }
 
@@ -62,20 +60,22 @@ tasks.register("sourcesJar", Jar::class) {
     from(sourceSets["main"].allSource)
 }
 
-val localRepo = uri("local-repo")
+project.afterEvaluate{
+    project.tasks["publishMavenPublicationToMedivhSonatypeRepository"].enabled = false
+    project.tasks["publishMedivhMavenJavaPublicationToVoineaRaduRepositoryRepository"].enabled = false
+}
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            artifact(tasks.named("sourcesJar"))
-            artifact(tasks.named("javadocJar"))
+//            artifact(tasks.named("sourcesJar"))
+//            artifact(tasks.named("javadocJar"))
 
             pom{
                 name.set("Utils Library")
                 description.set("A utility library for various purposes.")
                 url.set("https://github.com/Voinea-Radu/Utils")
-
                 licenses {
                     license {
                         name.set("MIT")
@@ -83,7 +83,6 @@ publishing {
                         distribution.set("repo")
                     }
                 }
-
                 developers {
                     developer {
                         id.set("voinearadu")
@@ -91,7 +90,6 @@ publishing {
                         email.set("contact@voinearadu.com")
                     }
                 }
-
                 scm {
                     connection.set("scm:git:git://github.com/Voinea-Radu/Utils.git")
                     developerConnection.set("scm:git:ssh://git@github.com/Voinea-Radu/Utils.git")
@@ -121,22 +119,6 @@ publishing {
                 }
             }
         }
-
-        maven {
-            url = localRepo
-        }
     }
 }
 
-signing {
-    sign(publishing.publications["maven"])
-}
-
-centralPortalPlus {
-    if (project.properties["maven.publish"] == "true") {
-        url = localRepo
-        username = project.findProperty("maven.auth.username") as String
-        password = project.findProperty("maven.auth.password") as String
-        publishingType = BaseCentralPortalPlusExtension.PublishingType.AUTOMATIC
-    }
-}
