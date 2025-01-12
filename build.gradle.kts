@@ -2,7 +2,7 @@ plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("tech.medivh.plugin.publisher") version "1.2.1" apply false
+    id("tech.medivh.plugin.publisher") version "1.2.2" apply false
     id("signing")
 }
 
