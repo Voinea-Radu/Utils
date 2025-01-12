@@ -109,6 +109,3 @@ jobs:
           title: "${{ env.VERSION }}"
           files: |
             build/libs/*.jar
-            src/*/build/libs/*.jar
-            src/*/*/build/libs/*.jar
-            src/*/*/*/build/libs/*.jar
