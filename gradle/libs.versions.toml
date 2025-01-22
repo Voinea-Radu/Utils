@@ -9,7 +9,7 @@ junit_bom = { module = "org.junit:junit-bom", version = "5.11.4" }
 
 # Annotations
 lombok = { module = "org.projectlombok:lombok", version = "1.18.36" }
-jetbrains_annotations = { module = "org.jetbrains:annotations", version = "26.0.1" }
+jetbrains_annotations = { module = "org.jetbrains:annotations", version = "26.0.2" }
 
 # Dependencies
 gson = { module = "com.google.code.gson:gson", version = "2.11.0" }
